@@ -41,6 +41,7 @@ import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -120,7 +121,9 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
                 R.layout.quick_settings_brightness_dialog, this, false);
         ImageView brightnessIcon = (ImageView) mBrightnessView.findViewById(R.id.brightness_icon);
         brightnessIcon.setVisibility(View.VISIBLE);
-        addView(mBrightnessView);
+        mBrightnessController = new BrightnessController(getContext(),
+                brightnessIcon,
+                mBrightnessView.findViewById(R.id.brightness_slider));
 
         setupTileLayout();
 
@@ -131,16 +134,17 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
             ((PagedTileLayout) mTileLayout).setPageIndicator((PageIndicator) mPageIndicator);
         }
 
+        mBrightnessView.setPadding(mBrightnessView.getPaddingLeft(),
+                    mBrightnessView.getPaddingTop(), mBrightnessView.getPaddingRight(),
+                    mContext.getResources().getDimensionPixelSize(R.dimen.qs_brightness_footer_padding));
+        addView(mBrightnessView);
+
         addDivider();
 
         mFooter = new QSSecurityFooter(this, context);
         addView(mFooter.getView());
 
         updateResources();
-
-        mBrightnessController = new BrightnessController(getContext(),
-                brightnessIcon,
-                findViewById(R.id.brightness_slider));
 
         mAutoBrightnessView = (ImageView) findViewById(R.id.brightness_icon);
     }
@@ -216,6 +220,10 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         } else if (QS_SHOW_AUTO_BRIGHTNESS.equals(key) && mIsAutomaticBrightnessAvailable) {
             mAutoBrightnessView.setVisibility(newValue == null || Integer.parseInt(newValue) != 0
                     ? VISIBLE : GONE);
+              }
+        } catch (Exception e){
+            Log.d(TAG, "Caught exception from Tuner", e);
+
         }
     }
 
