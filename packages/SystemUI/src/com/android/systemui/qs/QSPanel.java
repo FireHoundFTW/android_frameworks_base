@@ -282,17 +282,13 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
 
     @Override
     public void onTuningChanged(String key, String newValue) {
-        if (QS_SHOW_BRIGHTNESS_SLIDER.equals(key)) {
-            mBrightnessView.setVisibility(newValue == null || Integer.parseInt(newValue) != 0
-                    ? VISIBLE : GONE);
-        } else if (QS_SHOW_AUTO_BRIGHTNESS.equals(key) && mIsAutomaticBrightnessAvailable) {
-            mAutoBrightnessView.setVisibility(newValue == null || Integer.parseInt(newValue) != 0
-                    ? VISIBLE : GONE);
-              }
-        } catch (Exception e){
-            Log.d(TAG, "Caught exception from Tuner", e);
-
-        }
+             if (QS_SHOW_BRIGHTNESS_SLIDER.equals(key)) {
+                 mBrightnessView.setVisibility(newValue == null || Integer.parseInt(newValue) != 0
+                         ? VISIBLE : GONE);
+             } else if (QS_SHOW_AUTO_BRIGHTNESS.equals(key) && mIsAutomaticBrightnessAvailable) {
+                 mAutoBrightnessView.setVisibility(newValue == null || Integer.parseInt(newValue) != 0
+                         ? VISIBLE : GONE);
+             }
     }
 
     public void openDetails(String subPanel) {
